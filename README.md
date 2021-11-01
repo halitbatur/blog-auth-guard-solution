@@ -41,9 +41,13 @@ This lab will test:
   - a GET request to `/articles/:slug` will correctly render the requested article
   - a GET request to `/` will correctly render the list of all articles
   - A POST request to `/articles/` will result in 403 status code and **not** create a new article
+  - A GET request to `/user/logout` will redirect to `/`
+  - A GET request to `/user/authenticated` will redirect to `/`
 
 - If there is a logged in user:
   - All the previous requests would be served correctly
+  - A GET request to `/user/signin` will redirect to `/user/authenticated`
+  - A GET request to `/user/signup` will redirect to `/`
   - A PUT request to `/articles/:id` of another user's article will result in 403 status code and **not** update article
   - A PUT request to `/articles/:id` of current user's article will update the article and redirect the user to the article's slug `/articles/:slug`
   - A DELETE request to `/articles/:id` of another user's article will result in 403 status code and **not** delete article
