@@ -50,6 +50,7 @@ services:
       - DB_PORT=27017
       - SERVER_PORT=$NODE_LOCAL_PORT
       - IS_DOCKER=true
+      - SECRET_KEY=$APP_SECRET
     stdin_open: true
     tty: true
     links:
