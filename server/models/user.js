@@ -48,4 +48,18 @@ userSchema.pre('validate', function (next) {
   next();
 });
 
+const transform = function (doc, ret, options) {
+  if (options.hide) {
+    options.hide.split(' ').forEach(function (prop) {
+      delete ret[prop];
+    });
+  }
+  return ret;
+};
+
+userSchema.set('toObject', { virtuals: true, transform });
+userSchema.set('toJSON', { virtuals: true, transform });
+userSchema.options.toJSON.hide = 'password_hash';
+// userSchema.options.toObject.hide = 'password_hash';
+
 module.exports = mongoose.model('User', userSchema);
