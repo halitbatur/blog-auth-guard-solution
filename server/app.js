@@ -1,6 +1,7 @@
 const express = require('express');
 const partials = require('express-partials');
 const fileUpload = require('express-fileupload');
+const session = require('express-session');
 const path = require('path');
 const Article = require('./models/article');
 const articleRouter = require('./routes/articles');
@@ -12,6 +13,20 @@ const db = require('./db');
 const app = express();
 
 const isTest = process.env.isJest || process.env.NODE_ENV === 'test';
+const isProduction = app.get('env') === 'production';
+
+const sess = {
+  secret: process.env.SECRET_KEY,
+  name: 'sid',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {},
+};
+
+if (isProduction) {
+  app.set('trust proxy', 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
 
 db.connect().then((msg) => console.log(msg));
 
@@ -23,6 +38,7 @@ const middleware = [
   partials(), // allows layouts
   express.static(path.join(__dirname, 'public')), // serve static paths in /public
   express.urlencoded({ extended: false }), // parses urlencoded forms
+  session(sess), // activates session in app
   methodOverride('_method'), // adds other rest http methods
   fileUpload({ createParentPath: true }), // parses file posts (uploads)
   attachUser, // adds user to each response template

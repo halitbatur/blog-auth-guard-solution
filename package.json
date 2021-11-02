@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-partials": "^0.3.0",
+    "express-session": "^1.17.2",
     "highlight.js": "^11.3.1",
     "jsdom": "^18.0.0",
     "marked": "^3.0.8",

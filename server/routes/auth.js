@@ -20,7 +20,10 @@ router.post('/signin', async (req, res) => {
   }
 
   res.setHeader('user', user.id);
-  req.user = user;
+  if (rememberMe) {
+    req.session.cookie.maxAge = 14 * 24 * 3600 * 1000; // 14 days
+  }
+  req.session.user = user;
   res.redirect('/user/authenticated');
 });
 
@@ -41,6 +44,14 @@ router.post('/signup', async (req, res) => {
       .status(400)
       .render('user/signup', { error: 'passwords do not match' });
   }
+
+  // Check accept tos
+  if (!acceptTos) {
+    return res.status(400).render('user/signup', {
+      error: "You haven't accepted terms of service",
+    });
+  }
+
   // Check username is unique
   let user = await User.findOne({ username });
   if (user) {
@@ -59,13 +70,14 @@ router.post('/signup', async (req, res) => {
     password_hash,
   });
 
-  req.user = user;
+  req.session.user = user;
 
-  res.redirect('/user/authenticated'); // this is only to exit tests, change on implementations
+  res.redirect('/user/authenticated');
 });
 
 router.get('/signout', (req, res) => {
-
+  req.session.destroy();
+  res.redirect('/');
 });
 
 // renders sign up page
