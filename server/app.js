@@ -29,7 +29,7 @@ const middleware = [
 ];
 
 function attachUser(req, res, next) {
-  res.locals.user = req.user;
+  if (req.session) res.locals.user = req.session.user;
   next();
 }
 
