@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie": "^0.4.1",
     "dompurify": "^2.3.3",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
@@ -37,5 +38,8 @@
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "supertest": "^6.1.6"
+  },
+  "jest": {
+    "testRegex": "((\\.|/)(test|spec))\\.[jt]sx?$"
   }
 }
