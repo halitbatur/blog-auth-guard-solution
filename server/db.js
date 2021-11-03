@@ -8,20 +8,20 @@ const {
   TEST_DB_HOST,
   DB_PORT,
   DB_NAME,
-  isJest,
+  IS_JEST,
 } = process.env;
 
 const DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
 const TEST_DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${TEST_DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
 
-let uri = isJest ? TEST_DB_URI : DB_URI;
+let uri = IS_JEST ? TEST_DB_URI : DB_URI;
 
 module.exports = {
   DB_URI,
   TEST_DB_URI,
   connect: async () => {
     await mongoose.connect(uri).catch((err) => console.log(err));
-    return isJest ? 'Connected to test db.' : 'Connected to db.';
+    return IS_JEST ? 'Connected to test db.' : 'Connected to db.';
   },
   closeDatabase: async () => {
     // await mongoose.connection.dropDatabase();

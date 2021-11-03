@@ -46,8 +46,8 @@ function saveArticleAndRedirect(path) {
     article.title = req.body.title;
     article.snippet = req.body.snippet;
     article.markdown = req.body.markdown;
-    article.author = req.user._id;
     try {
+      article.author = req.session?.user?._id ?? null;
       article = await article.save();
       res.redirect(`/articles/${article.slug}`);
     } catch (e) {
