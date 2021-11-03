@@ -17,10 +17,10 @@ Additionally, these tests will be run:
 
 In order to persis a user's sign in, you need to use sessions and cookies. This lab will test:
 
-- On login, the response have a valid **cookie** with the name `sid` that contains the session id
+- On login or register, the response have a valid **cookie** with the name `sid` that contains the session id
 - The cookie won't have an `Expires` attribute  I.E. _valid for 1 session only_
 - On login with _remember me_, the response have a valid cookie with `Expires` attribute for **14 days**
-- Subsequent request will have the user in the session after they login
+- Subsequent request will have the user in the session after they login or register
 - On registration, the cookie will be valid for 1 session only as well
 - On logout, subsequent requests will not be authenticated
 
@@ -41,6 +41,7 @@ This lab will test:
   - a GET request to `/articles/:slug` will correctly render the requested article
   - a GET request to `/` will correctly render the list of all articles
   - A POST request to `/articles/` will result in 403 status code and **not** create a new article
+  - A PUT, DELETE request to `/articles/:id` will result in 403 status code and **not** update or delete any article
   - A GET request to `/user/logout` will redirect to `/`
   - A GET request to `/user/authenticated` will redirect to `/`
 
