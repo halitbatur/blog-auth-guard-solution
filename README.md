@@ -28,7 +28,6 @@ In order to persis a user's sign in, you need to use sessions and cookies. This 
 
 > 💡 TIP: For app secret, you can use `process.env.SECRET_KEY` environment variable already set up for secure app secret
 
-
 ### Guards
 
 In order to guard a route, you need to have a middleware that redirects the user to login in case they need to access an authenticated only route like `/articles/new`. And for owner only routes, you need to check if article's author match current user.

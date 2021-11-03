@@ -11,9 +11,9 @@ const db = require('./db');
 
 const app = express();
 
-const isTest = process.env.isJest || process.env.NODE_ENV === 'test';
+const isTest = process.env.IS_JEST || process.env.NODE_ENV === 'test';
 
-db.connect().then((msg) => console.log(msg));
+db.connect();
 
 // Set view engine and views dir
 app.set('view engine', 'ejs');
@@ -29,7 +29,7 @@ const middleware = [
 ];
 
 function attachUser(req, res, next) {
-  if (req.session) res.locals.user = req.session.user;
+  res.locals.user = req.session?.user ?? null;
   next();
 }
 
