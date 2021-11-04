@@ -37,7 +37,7 @@ const ROUTES = {
   SIGN_OUT: '/user/signout',
   NEW_ARTICLE: '/articles/new',
   EDIT_ARTICLE: '/articles/edit/6179eec2fa1cb9ff468a799c',
-  SLUG_ARTICLE: '/articles/replace-null-with-es6-symbols',
+  SLUG_ARTICLE: '/articles/interactive-components-less-wiring-more-inspiring',
   HOME: '/',
   AUTHENTICATED: '/user/authenticated',
   ARTICLES: '/articles',
