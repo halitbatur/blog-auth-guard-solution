@@ -7,13 +7,14 @@
   "license": "MIT",
   "scripts": {
     "start:app": "nodemon server/app.js",
-    "postinstall": "CONT=$(docker ps -aqf name=node-app) && [ $CONT ] && docker exec -w /backend-app $CONT npm i || true",
+    "postinstall": "docker-compose exec -w /backend-app app npm install || true",
     "start": "docker-compose up",
     "build": "docker-compose up --build",
     "prune": "docker-compose down -v",
     "stop": "docker-compose down",
-    "test": "CONT=$(docker ps -aqf name=node-app) && [ $CONT ] && docker exec -t -w /backend-app $CONT npm run test:app",
-    "test:app": "IS_JEST=1 jest --noStackTrace --forceExit --detectOpenHandles"
+    "test": "docker-compose exec -w /backend-app app npm run test:app",
+    "test:app": "IS_JEST=1 jest --noStackTrace --forceExit --detectOpenHandles",
+    "pretest": "docker-compose exec mongodb-test /docker-entrypoint-initdb.d/mongorestore.sh"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
