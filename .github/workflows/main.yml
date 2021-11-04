@@ -30,7 +30,7 @@ jobs:
         run: docker-compose up --build -d
       
       - name: Run tests
-        run: docker-compose exec -w /backend-app app npm run test:app
+        run: docker-compose exec -T -w /backend-app app npm run test:app
         
       - name: Stop containers
         run: yarn stop
