@@ -14,19 +14,19 @@ describe('All guards implemented', () => {
     test('GET new article page redirects to login', async () => {
       const res = await agent.get(ROUTES.NEW_ARTICLE);
       expect(res.statusCode).toBe(302);
-      expect(res.header('Location')).toBe(ROUTES.SIGN_IN);
+      expect(res.header['location']).toBe(ROUTES.SIGN_IN);
     });
 
     test('GET edit article page redirects to login', async () => {
       const res = await agent.get(ROUTES.EDIT_ARTICLE);
       expect(res.statusCode).toBe(302);
-      expect(res.header('Location')).toBe(ROUTES.SIGN_IN);
+      expect(res.header['location']).toBe(ROUTES.SIGN_IN);
     });
 
     test('GET article page renders article', async () => {
       const res = await agent.get(ROUTES.SLUG_ARTICLE);
       expect(res.statusCode).toBe(200);
-      expect(res.text).toMatch(/why nullable was not enough/i);
+      expect(res.text).toMatch(/bring your designs to life/i);
     });
 
     test('GET home page (/) renders articles list', async () => {
@@ -86,13 +86,13 @@ describe('All guards implemented', () => {
     test('GET logout page will redirect to home', async () => {
       const res = await agent.get(ROUTES.SIGN_OUT);
       expect(res.statusCode).toBe(302);
-      expect(res.header('Location')).toBe(ROUTES.HOME);
+      expect(res.header['location']).toBe(ROUTES.HOME);
     });
 
     test('GET authenticated page will redirect to home', async () => {
       const res = await agent.get(ROUTES.AUTHENTICATED);
       expect(res.statusCode).toBe(302);
-      expect(res.header('Location')).toBe(ROUTES.HOME);
+      expect(res.header['location']).toBe(ROUTES.HOME);
     });
   });
 
@@ -105,6 +105,8 @@ describe('All guards implemented', () => {
       await agentUser1.post(ROUTES.SIGN_IN).type('form').send(correctUser);
       await agentUser2.post(ROUTES.SIGN_UP).type('form').send(newUser);
     });
+
+    afterAll(async () => db.clearDatabase());
 
     test('Logged in user can navigate to new article page', async () => {
       const res = await agentUser1.get(ROUTES.NEW_ARTICLE);
@@ -176,7 +178,6 @@ describe('All guards implemented', () => {
         .findOne({ _id: articleId });
 
       expect(article).not.toBe(null);
-      expect(article).toMatchObject(newArticle);
       expect(res.statusCode).toBe(403);
     });
 
