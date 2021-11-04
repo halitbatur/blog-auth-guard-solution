@@ -1,12 +1,13 @@
 const express = require('express');
+const ensureAuthenticated = require('../middleware/ensureAuthenticated');
 const Article = require('./../models/article');
 const router = express.Router();
 
-router.get('/new', (req, res) => {
+router.get('/new', ensureAuthenticated(), (req, res) => {
   res.render('articles/new', { article: new Article() });
 });
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', ensureAuthenticated(), async (req, res) => {
   const article = await Article.findById(req.params.id);
   res.render('articles/edit', { article: article });
 });
@@ -19,6 +20,7 @@ router.get('/:slug', async (req, res) => {
 
 router.post(
   '/',
+  ensureAuthenticated(),
   async (req, res, next) => {
     req.article = new Article();
     next();
@@ -28,16 +30,23 @@ router.post(
 
 router.put(
   '/:id',
+  ensureAuthenticated(),
   async (req, res, next) => {
+    const user = req.session.user;
     req.article = await Article.findById(req.params.id);
-    next();
+    if (req.article.author.id === user.id) next();
+    else res.status(403).end();
   },
   saveArticleAndRedirect('edit')
 );
 
-router.delete('/:id', async (req, res) => {
-  await Article.findByIdAndDelete(req.params.id);
-  res.redirect('/');
+router.delete('/:id', ensureAuthenticated(), async (req, res) => {
+  const user = req.session.user;
+  const article = await Article.findById(req.params.id);
+  if (article.author.id === user.id) {
+    await Article.findByIdAndDelete(req.params.id);
+    res.redirect('/');
+  } else res.status(403).end();
 });
 
 function saveArticleAndRedirect(path) {

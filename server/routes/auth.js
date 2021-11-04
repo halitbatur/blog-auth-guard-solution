@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('./../models/user');
 const bcrypt = require('bcrypt');
+const ensureAuthenticated = require('../middleware/ensureAuthenticated');
 const router = express.Router();
 
 router.post('/signin', async (req, res) => {
@@ -75,22 +76,24 @@ router.post('/signup', async (req, res) => {
   res.redirect('/user/authenticated');
 });
 
-router.get('/signout', (req, res) => {
+router.get('/signout', ensureAuthenticated('/'), (req, res) => {
   req.session.destroy();
   res.redirect('/');
 });
 
 // renders sign up page
 router.get('/signup', (req, res) => {
-  res.render('user/signup');
+  if (!req.session?.user) res.render('user/signup');
+  else res.redirect('/');
 });
 
 // renders sign in page
 router.get('/signin', (req, res) => {
-  res.render('user/signin');
+  if (!req.session?.user) res.render('user/signin');
+  else res.redirect('/user/authenticated');
 });
 
-router.get('/authenticated', (req, res) => {
+router.get('/authenticated', ensureAuthenticated('/'), (req, res) => {
   res.render('user/authenticated');
 });
 
