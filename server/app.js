@@ -2,12 +2,13 @@ const express = require('express');
 const partials = require('express-partials');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
+const methodOverride = require('method-override');
 const path = require('path');
+
 const Article = require('./models/article');
 const articleRouter = require('./routes/articles');
 const authRouter = require('./routes/auth');
 const avatarRouter = require('./routes/avatar');
-const methodOverride = require('method-override');
 const db = require('./db');
 
 const app = express();
@@ -15,13 +16,15 @@ const app = express();
 const isTest = process.env.IS_JEST || process.env.NODE_ENV === 'test';
 const isProduction = app.get('env') === 'production';
 
+// Configure session options
 const sess = {
   secret: process.env.SECRET_KEY,
   name: 'sid',
-  resave: false,
-  saveUninitialized: false,
+  resave: false, // don't save the sessions back to the session store
+  saveUninitialized: false, // don't save uninitialized sessions to the session store
   cookie: {},
 };
+// NOTE: Explore the express-session documentation to understand different available options for session configuration
 
 if (isProduction) {
   app.set('trust proxy', 1); // trust first proxy
@@ -38,7 +41,7 @@ const middleware = [
   partials(), // allows layouts
   express.static(path.join(__dirname, 'public')), // serve static paths in /public
   express.urlencoded({ extended: false }), // parses urlencoded forms
-  session(sess), // activates session in app
+  session(sess), // activates session handling in app
   methodOverride('_method'), // adds other rest http methods
   fileUpload({ createParentPath: true }), // parses file posts (uploads)
   attachUser, // adds user to each response template
