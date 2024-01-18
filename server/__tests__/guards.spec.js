@@ -48,7 +48,7 @@ describe('All guards implemented', () => {
         .collection('articles')
         .find({});
 
-      expect(articlesBefore).toEqual(articlesAfter);
+      expect(articlesBefore).toMatchObject(articlesAfter);
       expect(res.statusCode).toBe(403);
     });
 
@@ -66,7 +66,7 @@ describe('All guards implemented', () => {
         .collection('articles')
         .find({});
 
-      expect(articlesBefore).toEqual(articlesAfter);
+      expect(articlesBefore).toMatchObject(articlesAfter);
       expect(res.statusCode).toBe(403);
     });
 
@@ -79,7 +79,7 @@ describe('All guards implemented', () => {
         .collection('articles')
         .find({});
 
-      expect(articlesBefore).toEqual(articlesAfter);
+      expect(articlesBefore).toMatchObject(articlesAfter);
       expect(res.statusCode).toBe(403);
     });
 

@@ -12,9 +12,9 @@
     "build": "docker-compose up --build",
     "prune": "docker-compose down -v",
     "stop": "docker-compose down",
-    "test": "docker-compose exec -w /backend-app app npm run test:app",
+    "test": "CONT=$(docker ps -aqf name=blog-auth-guard-app) && [ $CONT ] && docker exec -t -w /backend-app $CONT npm run test:app",
     "test:app": "IS_JEST=1 jest --noStackTrace --forceExit --detectOpenHandles",
-    "pretest": "docker-compose exec mongodb-test /docker-entrypoint-initdb.d/mongorestore.sh"
+    "pretest": "docker-compose exec blog-auth-guard-mongodb-test /docker-entrypoint-initdb.d/mongorestore.sh"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

@@ -15,7 +15,7 @@ const DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_N
 const TEST_DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${TEST_DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
 
 let uri = IS_JEST ? TEST_DB_URI : DB_URI;
-
+console.log(uri);
 module.exports = {
   DB_URI,
   TEST_DB_URI,
